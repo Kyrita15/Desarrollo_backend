@@ -54,5 +54,9 @@ app.use('/api/notificaciones', notificacionRoutes);
 const compraRoutes = require('./routes/compraRoutes');
 app.use('/api/compras', compraRoutes);
 
-// ✅ Exporta app para Vercel
-module.exports = app;
+// ✅ Puerto dinámico para Vercel o local
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, () => {
+  console.log(`✅ API de adopciones funcionando en el puerto ${PORT}`);
+});
