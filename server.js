@@ -54,8 +54,5 @@ app.use('/api/notificaciones', notificacionRoutes);
 const compraRoutes = require('./routes/compraRoutes');
 app.use('/api/compras', compraRoutes);
 
-// 🚀 Levantar servidor
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
-});
+// ✅ Exporta app para Vercel
+module.exports = app;
