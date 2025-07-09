@@ -4,16 +4,17 @@ require('dotenv').config();
 
 const app = express();
 
+// ✅ Orígenes permitidos
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:5173',
-  'https://adopciones-frontend.vercel.app', // 👈 añade el dominio de Vercel aquí
+  process.env.FRONTEND_URL || 'http://localhost:5173', // Frontend local
+  'https://adopciones-frontend.vercel.app',            // Frontend en Vercel
 ];
 
+// ✅ Configurar CORS
 app.use(cors({
   origin: function (origin, callback) {
-    // Permite requests sin origin (como Postman)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin) return callback(null, true); // Permite Postman y CLI sin origin
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -24,7 +25,7 @@ app.use(cors({
 
 app.use(express.json());
 
-// 👇 Ruta de prueba
+// ✅ Ruta de prueba
 app.get('/', (req, res) => {
   res.send('✅ API de adopciones funcionando 🐶');
 });
@@ -54,9 +55,12 @@ app.use('/api/notificaciones', notificacionRoutes);
 const compraRoutes = require('./routes/compraRoutes');
 app.use('/api/compras', compraRoutes);
 
-// ✅ Puerto dinámico para Vercel o local
-const PORT = process.env.PORT || 4000;
+// ✅ Exportar app para Vercel (no usar app.listen en Vercel)
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 4000;
+  app.listen(PORT, () => {
+    console.log(`✅ API de adopciones corriendo en http://localhost:${PORT}`);
+  });
+}
 
-app.listen(PORT, () => {
-  console.log(`✅ API de adopciones funcionando en el puerto ${PORT}`);
-});
+module.exports = app;
