@@ -4,9 +4,9 @@ require('dotenv').config();
 
 const app = express();
 
-// ✅ Configurar CORS dinámicamente
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:5173', // 👈 dominio frontend local
+  process.env.FRONTEND_URL || 'http://localhost:5173',
+  'https://adopciones-frontend.vercel.app', // 👈 añade el dominio de Vercel aquí
 ];
 
 app.use(cors({
